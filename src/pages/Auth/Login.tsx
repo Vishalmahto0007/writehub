@@ -46,7 +46,7 @@ const Login = () => {
     try {
       await dispatch(loginUser({ email, password }));
       toast.success("Login successful!");
-      window.location.href = "/dashboard";
+      // window.location.href = "/dashboard";
     } catch (err: any) {
       setError(err?.response?.data?.message || "Invalid credentials.");
     } finally {

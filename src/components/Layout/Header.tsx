@@ -18,7 +18,7 @@ const Header: React.FC = () => {
     toast.success("Logout Successfully.");
     localStorage.setItem("auth-event", Date.now().toString());
     setShowDropdown(false);
-    window.location.href = "/login";
+    // window.location.href = "/login";
   };
 
   return (
