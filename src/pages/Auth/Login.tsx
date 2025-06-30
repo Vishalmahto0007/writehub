@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FilePenLine } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
-import { authAPI } from "../../services/api";
+import { useAppDispatch } from "../../hooks/redux";
+import { loginUser } from "../../store/slices/authSlice";
+
 import bgPic from "../../../src/images/bg-pic.png";
 
 const Login = () => {
@@ -12,6 +14,7 @@ const Login = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -41,7 +44,7 @@ const Login = () => {
     setError("");
     setLoading(true);
     try {
-      await authAPI.login({ email, password });
+      await dispatch(loginUser({ email, password }));
       toast.success("Login successful!");
       window.location.href = "/dashboard";
     } catch (err: any) {
