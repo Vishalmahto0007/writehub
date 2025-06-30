@@ -5,19 +5,20 @@ import { useAppSelector, useAppDispatch } from "../../hooks/redux";
 import { toggleTheme } from "../../store/slices/uiSlice";
 import { logoutUser } from "../../store/slices/authSlice";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Header: React.FC = () => {
   const { theme } = useAppSelector((state) => state.ui);
   const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const [showDropdown, setShowDropdown] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     await dispatch(logoutUser());
     toast.success("Logout Successfully.");
-
     setShowDropdown(false);
-    window.location.href = "/login";
+    navigate("/login", { replace: true });
   };
 
   return (
