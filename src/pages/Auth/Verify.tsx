@@ -56,35 +56,60 @@ const Verify = () => {
     );
   }
 
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setError("");
+  //   setLoading(true);
+  //   try {
+  //     // let url = "";
+  //     // let body: any = { email, code };
+  //     // if (forReset) {
+  //     //   url = "http://localhost:8080/api/auth/verify-reset";
+  //     //   body.newPassword = newPassword;
+  //     // } else {
+  //     //   url = "http://localhost:8080/api/auth/verify";
+  //     // }
+  //     // const res = await fetch(url, {
+  //     //   method: "POST",
+  //     //   headers: { "Content-Type": "application/json" },
+  //     //   body: JSON.stringify(body),
+  //     //   credentials: "include",
+  //     // });
+  //     await authAPI.verifyCode(email, code);
+
+  //     // const data = await res.json();
+  //     // setLoading(false);
+  //     if (!res.ok) throw new Error(data.message || "Verification failed");
+  //     toast.success(
+  //       forReset ? "Password reset successful!" : "Account verified!"
+  //     );
+  //     setTimeout(() => navigate("/login"), 1500);
+  //   } catch (err: any) {
+  //     setLoading(false);
+  //     setError(err.message);
+  //   }
+  // };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
+
     try {
-      let url = "";
-      let body: any = { email, code };
-      if (forReset) {
-        url = "http://localhost:8080/api/auth/verify-reset";
-        body.newPassword = newPassword;
-      } else {
-        url = "http://localhost:8080/api/auth/verify";
-      }
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-        credentials: "include",
-      });
-      const data = await res.json();
-      setLoading(false);
-      if (!res.ok) throw new Error(data.message || "Verification failed");
+      // Call the verifyCode API
+      await authAPI.verifyCode(email, code);
+
       toast.success(
         forReset ? "Password reset successful!" : "Account verified!"
       );
+
+      // Redirect to login after a delay
       setTimeout(() => navigate("/login"), 1500);
     } catch (err: any) {
+      setError(
+        err.response?.data?.message || err.message || "Verification failed"
+      );
+    } finally {
       setLoading(false);
-      setError(err.message);
     }
   };
 
