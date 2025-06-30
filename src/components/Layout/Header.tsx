@@ -12,13 +12,13 @@ const Header: React.FC = () => {
   const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const [showDropdown, setShowDropdown] = React.useState(false);
-  const navigate = useNavigate();
 
   const handleLogout = async () => {
     await dispatch(logoutUser());
     toast.success("Logout Successfully.");
+    localStorage.setItem("auth-event", Date.now().toString());
     setShowDropdown(false);
-    navigate("/login", { replace: true });
+    window.location.href = "/login";
   };
 
   return (

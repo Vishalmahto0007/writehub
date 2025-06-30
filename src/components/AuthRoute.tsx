@@ -9,14 +9,17 @@ interface Props {
 }
 
 const AuthRoute: React.FC<Props> = ({ authRequired = true, children }) => {
-  const [isAuth, setIsAuth] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [isAuth, setIsAuth] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const location = useLocation();
+
+  // Flag from localStorage to re-check auth status
+  const [authKey, setAuthKey] = useState<number>(Date.now());
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        await authAPI.getMe();
+        await authAPI.getMe(); // Will fail if cookies are cleared
         setIsAuth(true);
       } catch {
         setIsAuth(false);
@@ -24,12 +27,19 @@ const AuthRoute: React.FC<Props> = ({ authRequired = true, children }) => {
         setLoading(false);
       }
     };
+
     checkAuth();
-    // Listen for storage events (e.g., login/logout in another tab)
-    const onStorage = () => checkAuth();
+
+    // Trigger re-check on custom event (logout/login)
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === "auth-event") {
+        setAuthKey(Date.now()); // Force re-check
+      }
+    };
+
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);
-  }, []);
+  }, [authKey]); // 👈 re-run auth check when triggered
 
   if (loading)
     return (
@@ -38,12 +48,10 @@ const AuthRoute: React.FC<Props> = ({ authRequired = true, children }) => {
       </div>
     );
 
-  //  Public route — redirect to dashboard if already authenticated
   if (!authRequired && isAuth) {
     return <Navigate to="/dashboard" replace />;
   }
 
-  //  Private route — redirect to login if not authenticated
   if (authRequired && !isAuth) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
