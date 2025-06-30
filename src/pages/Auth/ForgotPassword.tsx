@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FilePenLine } from "lucide-react";
 import { authAPI } from "../../services/api";
 
-const bgPic = "../src/images/bg-pic.png";
+import bgPic from "../../../src/images/bg-pic.png";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");

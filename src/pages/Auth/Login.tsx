@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import { FilePenLine } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { authAPI } from "../../services/api";
-
-const bgPic = "../src/images/bg-pic.png";
+import bgPic from "../../../src/images/bg-pic.png";
 
 const Login = () => {
   const [form, setForm] = useState({

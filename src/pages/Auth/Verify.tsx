@@ -4,7 +4,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { FilePenLine } from "lucide-react";
 import { authAPI } from "../../services/api";
 
-const bgPic = "../src/images/bg-pic.png";
+import bgPic from "../../../src/images/bg-pic.png";
 
 const Verify = () => {
   const location = useLocation();
