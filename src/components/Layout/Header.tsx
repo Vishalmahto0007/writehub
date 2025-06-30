@@ -5,7 +5,7 @@ import { useAppSelector, useAppDispatch } from "../../hooks/redux";
 import { toggleTheme } from "../../store/slices/uiSlice";
 import { logoutUser } from "../../store/slices/authSlice";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const Header: React.FC = () => {
   const { theme } = useAppSelector((state) => state.ui);

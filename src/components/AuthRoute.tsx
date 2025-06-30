@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { authAPI } from "../services/api";
+import { useAppDispatch } from "../hooks/redux";
+import { fetchCurrentUser } from "../store/slices/authSlice";
 import LoadingSpinner from "./UI/LoadingSpinner";
+import { authAPI } from "../services/api";
 
 interface Props {
   authRequired?: boolean;
@@ -9,17 +11,21 @@ interface Props {
 }
 
 const AuthRoute: React.FC<Props> = ({ authRequired = true, children }) => {
-  const [isAuth, setIsAuth] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isAuth, setIsAuth] = useState(false);
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
-
-  // Flag from localStorage to re-check auth status
-  const [authKey, setAuthKey] = useState<number>(Date.now());
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const checkAuth = async () => {
+      if (!authRequired) {
+        setIsAuth(false); // Or true if you want public to skip check
+        setLoading(false);
+        return;
+      }
+
       try {
-        await authAPI.getMe(); // Will fail if cookies are cleared
+        await dispatch(fetchCurrentUser());
         setIsAuth(true);
       } catch {
         setIsAuth(false);
@@ -29,24 +35,9 @@ const AuthRoute: React.FC<Props> = ({ authRequired = true, children }) => {
     };
 
     checkAuth();
+  }, [authRequired]);
 
-    // Trigger re-check on custom event (logout/login)
-    const onStorage = (event: StorageEvent) => {
-      if (event.key === "auth-event") {
-        setAuthKey(Date.now()); // Force re-check
-      }
-    };
-
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
-  }, [authKey]); // 👈 re-run auth check when triggered
-
-  if (loading)
-    return (
-      <div>
-        <LoadingSpinner />
-      </div>
-    );
+  if (loading) return <LoadingSpinner />;
 
   if (!authRequired && isAuth) {
     return <Navigate to="/dashboard" replace />;
@@ -56,7 +47,7 @@ const AuthRoute: React.FC<Props> = ({ authRequired = true, children }) => {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  return <>{children || <Outlet />}</>;
+  return <>{children}</>;
 };
 
 export default AuthRoute;

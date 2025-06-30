@@ -37,9 +37,9 @@ const App: React.FC = () => {
   }, [theme]);
 
   // Restore user from cookie on refresh
-  useEffect(() => {
-    dispatch(fetchCurrentUser());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchCurrentUser());
+  // }, [dispatch]);
 
   return (
     <Router>

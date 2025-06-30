@@ -125,10 +125,6 @@ export const todoAPI = {
 
 // Notes
 export const notesAPI = {
-  // getNotes: async (params: { search?: string; type?: string }) => {
-  //   const response = await api.get("/notes", { params });
-  //   return response.data;
-  // },
   getNotes: async (params: {
     page?: number;
     search?: string;
@@ -191,7 +187,6 @@ export const goalsAPI = {
 export const dashboardAPI = {
   getDashbaord: async () => {
     const response = await api.get("/dashboard");
-    console.log("response -->>", response);
     return response.data;
   },
 };
