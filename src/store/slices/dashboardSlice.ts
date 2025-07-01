@@ -62,7 +62,6 @@ const dashboardSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchDashboardItems.fulfilled, (state, action) => {
-        console.log("Action -->>", action);
         state.isLoading = false;
         state.items = action.payload?.latest;
         state.counts = action.payload?.counts;

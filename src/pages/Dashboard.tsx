@@ -44,7 +44,6 @@ const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
   const { items, counts } = useAppSelector((state) => state.dashboard);
 
-  console.log(items, counts);
 
   useEffect(() => {
     dispatch(fetchDashboardItems());

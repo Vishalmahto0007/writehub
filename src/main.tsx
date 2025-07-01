@@ -10,7 +10,6 @@ const App = lazy(() => import("./App"));
 
 const rootElement = document.getElementById("root");
 
-console.log("store -->>", store);
 if (rootElement) {
   createRoot(rootElement).render(
     <React.StrictMode>

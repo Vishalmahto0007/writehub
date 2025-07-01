@@ -107,7 +107,6 @@ const goalsSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchGoals.fulfilled, (state, action) => {
-        console.log("Action -->>", action.payload);
         state.goals = action.payload;
         state.isLoading = false;
       })
