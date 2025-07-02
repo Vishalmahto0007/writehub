@@ -13,12 +13,12 @@ const AuthRoute: React.FC<Props> = ({ authRequired = true, children }) => {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
-  const isLoading = useSelector((state: RootState) => state.auth.isLoading);
+  // const isLoading = useSelector((state: RootState) => state.auth.isLoading);
   const location = useLocation();
 
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
+  // if (isLoading) {
+  //   return <LoadingSpinner />;
+  // }
 
   if (authRequired && !isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;

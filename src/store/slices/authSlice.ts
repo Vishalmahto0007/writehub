@@ -19,6 +19,8 @@ interface AuthState {
   isLoading: boolean;
   isAuthenticated: boolean;
   error: string | null;
+  initialCheckDone: boolean;
+  message: string | null;
 }
 
 const initialState: AuthState = {
@@ -27,6 +29,8 @@ const initialState: AuthState = {
   isLoading: false,
   isAuthenticated: !!tokenFromStorage,
   error: null,
+  initialCheckDone: false,
+  message: null,
 };
 
 // ✅ LOGIN
@@ -45,7 +49,7 @@ export const loginUser = createAsyncThunk(
       }
 
       const meRes = await authAPI.getMe();
-      return { user: meRes.user, token };
+      return { user: meRes.user, token: token, message: loginRes.message };
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || "Login failed");
     }
@@ -123,6 +127,7 @@ const authSlice = createSlice({
         state.user = action.payload.user;
         state.token = action.payload.token;
         state.isAuthenticated = true;
+        state.message = action.payload.message;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -169,6 +174,7 @@ const authSlice = createSlice({
           state.user = action.payload;
           state.isAuthenticated = true;
           state.isLoading = false;
+          state.initialCheckDone = true;
         }
       )
       .addCase(fetchCurrentUser.rejected, (state) => {
@@ -176,6 +182,7 @@ const authSlice = createSlice({
         state.token = null;
         state.isAuthenticated = false;
         state.isLoading = false;
+        state.initialCheckDone = true;
       });
   },
 });
