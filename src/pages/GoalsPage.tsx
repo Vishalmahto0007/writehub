@@ -68,8 +68,8 @@ const GoalsPage: React.FC = () => {
     const { source, destination, draggableId } = result;
     if (source.droppableId !== destination.droppableId) {
       const newStatus = destination.droppableId as "start" | "completed";
-      dispatch(moveGoal({ goalId: draggableId, newStatus }));
-      dispatch(updateGoalStatus({ id: draggableId, status: newStatus }));
+      await dispatch(moveGoal({ goalId: draggableId, newStatus }));
+      await dispatch(updateGoalStatus({ id: draggableId, status: newStatus }));
     }
   };
 
