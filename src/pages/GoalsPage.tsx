@@ -35,6 +35,7 @@ const GoalsPage: React.FC = () => {
 
   const handleCreateGoal = async (data: any) => {
     await dispatch(createGoal({ ...data, status: "start" }));
+    await dispatch(fetchGoals());
     setShowCreateModal(false);
     toast.success("Goal created successfully!");
   };
@@ -42,6 +43,7 @@ const GoalsPage: React.FC = () => {
   const handleEditGoal = async (data: any) => {
     if (editingGoal) {
       await dispatch(updateGoal({ id: editingGoal.id, updates: data }));
+      await dispatch(fetchGoals());
       setEditingGoal(null);
       toast.success("Goal updated successfully!");
     }
@@ -55,6 +57,7 @@ const GoalsPage: React.FC = () => {
     if (!deleteId) return;
     setIsDeleting(true);
     await dispatch(deleteGoal(deleteId));
+    await dispatch(fetchGoals());
     setIsDeleting(false);
     setDeleteId(null);
     toast.success("Goal deleted successfully!");
@@ -187,4 +190,3 @@ const GoalsPage: React.FC = () => {
 };
 
 export default GoalsPage;
-0;
